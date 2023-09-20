@@ -5,7 +5,11 @@ set -eu
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 service sshd restart
 echo 'root:'$SSH_JENKINS_PASSWD | chpasswd
+export SSH_JENKINS_PASSWD="nope"
 docker login --username=$DOCKER_USER --password=$DOCKER_PASS $DOCKER_HOST
+export DOCKER_USER="nope"
+export DOCKER_PASS="nope"
+export DOCKER_HOST="nope"
 
 _tls_ensure_private() {
 	local f="$1"; shift
