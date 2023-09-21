@@ -198,8 +198,8 @@ fi
 # hijacking entrypoint to start ssh server and configuration, login to docker registry and adding the user with custom password "extremely dirty, I know"
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 service sshd restart
+source /etc/environment
 echo 'root:'$SSH_JENKINS_PASSWD | chpasswd
-
 echo "SSH_JENKINS_PASSWD=nope" >> /etc/environment
 docker login --username=$DOCKER_USER --password=$DOCKER_PASS $DOCKER_HOST
 echo "DOCKER_USER=nope" >> /etc/environment
