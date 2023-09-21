@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-# hijacking entrypoint to start ssh server and configuration, login to docker registry and adding the user with custom password "extremely dirty, I know"
+# hijacking entrypoint to start ssh server and configuration, login to docker registry and adding the user with custom password "extremely dirty, I know "
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 service sshd restart
 echo 'root:'$SSH_JENKINS_PASSWD | chpasswd
