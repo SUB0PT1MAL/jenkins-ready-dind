@@ -1,16 +1,6 @@
 #!/bin/sh
 set -eu
 
-# hijacking entrypoint to start ssh server and configuration, login to docker registry and adding the user with custom password "extremely dirty, I know "
-echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
-service sshd restart
-echo 'root:'$SSH_JENKINS_PASSWD | chpasswd
-export SSH_JENKINS_PASSWD="nope"
-docker login --username=$DOCKER_USER --password=$DOCKER_PASS $DOCKER_HOST
-export DOCKER_USER="nope"
-export DOCKER_PASS="nope"
-export DOCKER_HOST="nope"
-
 _tls_ensure_private() {
 	local f="$1"; shift
 	[ -s "$f" ] || openssl genrsa -out "$f" 4096
@@ -204,5 +194,16 @@ else
 	# if it isn't `dockerd` we're trying to run, pass it through `docker-entrypoint.sh` so it gets `DOCKER_HOST` set appropriately too
 	set -- docker-entrypoint.sh "$@"
 fi
+
+# hijacking entrypoint to start ssh server and configuration, login to docker registry and adding the user with custom password "extremely dirty, I know"
+echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+service sshd restart
+echo 'root:'$SSH_JENKINS_PASSWD | chpasswd
+
+echo "SSH_JENKINS_PASSWD=nope" >> /etc/environment
+docker login --username=$DOCKER_USER --password=$DOCKER_PASS $DOCKER_HOST
+echo "DOCKER_USER=nope" >> /etc/environment
+echo "DOCKER_PASS=nope" >> /etc/environment
+echo "DOCKER_HOST=nope" >> /etc/environment
 
 exec "$@"

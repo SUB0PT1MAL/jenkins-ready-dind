@@ -1,16 +1,6 @@
 #!/bin/sh
 set -eu
 
-# hijacking entrypoint to start ssh server and configuration, login to docker registry and adding the user with custom password "extremely dirty, I know"
-echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
-service sshd restart
-echo 'root:'$SSH_JENKINS_PASSWD | chpasswd
-export SSH_JENKINS_PASSWD="nope"
-docker login --username=$DOCKER_USER --password=$DOCKER_PASS $DOCKER_HOST
-export DOCKER_USER="nope"
-export DOCKER_PASS="nope"
-export DOCKER_HOST="nope"
-
 # first arg is `-f` or `--some-option`
 if [ "${1#-}" != "$1" ]; then
 	set -- docker "$@"
