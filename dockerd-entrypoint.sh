@@ -199,8 +199,8 @@ fi
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 service sshd restart
 echo 'root:'$SSH_JENKINS_PASSWD | chpasswd
-unset SSH_JENKINS_PASSWD
+#unset SSH_JENKINS_PASSWD
 docker login --username=$DOCKER_USER --password=$DOCKER_PASS $DOCKER_HOST
-unset DOCKER_USER DOCKER_PASS DOCKER_HOST
+#unset DOCKER_USER DOCKER_PASS DOCKER_HOST
 
 exec "$@"
