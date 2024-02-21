@@ -11,4 +11,3 @@ RUN touch /run/openrc/softlevel
 RUN rc-status
 
 ENTRYPOINT ["dockerd-entrypoint.sh"]
-CMD []
